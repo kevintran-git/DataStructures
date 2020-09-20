@@ -1,0 +1,10 @@
+plugins {
+    id 'java'
+}
+
+group 'KevinTran'
+version '0'
+
+repositories {
+    mavenCentral()
+}
