@@ -8,26 +8,55 @@ public class Postfix {
         return 0;
     }
 
-    public static String toPost(String inf) {
+    public static String toPost(String infix) {
         StackInterface<Character> stack = new LinkedStack<>();
         stack.push('#'); //Extra char to avoid underflow
         StringBuilder output = new StringBuilder();
-        for (char c : inf.toCharArray()) {
+        for (char c : infix.toCharArray()) {
             if (c == ' ') continue; //Ignore empty
             if ("+-*/^()".indexOf(c) == -1) output.append(c); //Outputs operand automatically.
-            else if (c == '(' || c == '^') stack.push(c); //Special case to always push the highest precedence operators, exponentials and parentheses.
+            else if (c == '(' || c == '^')
+                stack.push(c); //Special case to always push the highest precedence operators, exponentials and parentheses.
             else if (c == ')') { //If we find a close parentheses, pop the stack until the matching open parentheses is found.
                 while (stack.peek() != '#' && stack.peek() != '(') output.append(stack.pop());
                 stack.pop();//remove the open parentheses in the stack
             } else {
                 if (preced(c) > preced(stack.peek())) stack.push(c);
                 else {
-                    while (stack.peek() != '#' && preced(c) <= (stack.peek()))output.append(stack.pop());
+                    while (stack.peek() != '#' && preced(c) <= preced((stack.peek()))) output.append(stack.pop());
                     stack.push(c);
                 }
             }
         }
-        while (stack.peek() != '#') output.append(stack.pop()); //Once you don't have any more characters in the infix expression, pop all the stored operators to the output.
+        while (stack.peek() != '#')
+            output.append(stack.pop()); //Once you don't have any more characters in the infix expression, pop all the stored operators to the output.
         return output.toString();
+    }
+
+    public static double evaluate(String postfix) {
+        StackInterface<Double> vals = new LinkedStack<>();
+        for (char c : postfix.toCharArray())
+            switch (c) {
+                case '+':
+                    vals.push(vals.pop() + vals.pop());
+                    break;
+                case '-':
+                    vals.push(-vals.pop() + vals.pop());
+                    break;
+                case '*':
+                    vals.push(vals.pop() * vals.pop());
+                    break;
+                case '/':
+                    vals.push((1.0 / vals.pop()) * vals.pop());
+                    break;
+                case '^':
+                    double b = vals.pop(), a = vals.pop();
+                    vals.push(Math.pow(a, b));
+                    break;
+                default:
+                    vals.push((double) Character.digit(c, 10));
+                    break;
+            }
+        return vals.peek();
     }
 }

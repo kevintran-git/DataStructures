@@ -49,7 +49,7 @@ public class LinkedStack<T> implements StackInterface<T>{
         StringBuilder asString = new StringBuilder();
         Node<T> node = head;
         while (node != null) {
-            asString.append(node.item.toString()).append(node.succ != null ? " -> " : "|BOTTOM");
+            asString.append(node.item.toString()).append(node.succ != null ? " -> " : "");
             node = node.succ;
         }
         return asString.toString();
