@@ -9,7 +9,7 @@ public class Postfix {
     }
 
     public static String toPost(String infix) {
-        StackInterface<Character> stack = new LinkedStack<>();
+        StackInterface<Character> stack = new VectorStack<>();
         stack.push('#'); //Extra char to avoid underflow
         StringBuilder output = new StringBuilder();
         for (char c : infix.toCharArray()) {
