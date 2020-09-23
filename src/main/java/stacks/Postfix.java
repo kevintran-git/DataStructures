@@ -1,5 +1,6 @@
 package stacks;
 
+
 public class Postfix {
     private static int preced(char operator) {
         if (operator == '+' || operator == '-') return 1;
@@ -33,30 +34,31 @@ public class Postfix {
         return output.toString();
     }
 
-    public static double evaluate(String postfix) {
+    public static double evaluatePostfix(String postfix, double... values) {
         StackInterface<Double> vals = new LinkedStack<>();
         for (char c : postfix.toCharArray())
-            switch (c) {
-                case '+':
-                    vals.push(vals.pop() + vals.pop());
-                    break;
-                case '-':
-                    vals.push(-vals.pop() + vals.pop());
-                    break;
-                case '*':
-                    vals.push(vals.pop() * vals.pop());
-                    break;
-                case '/':
-                    vals.push((1.0 / vals.pop()) * vals.pop());
-                    break;
-                case '^':
+            vals.push(switch (c) {
+                case '+' -> vals.pop() + vals.pop();
+                case '-' -> -vals.pop() + vals.pop();
+                case '*' -> vals.pop() * vals.pop();
+                case '/' -> (1.0 / vals.pop()) * vals.pop();
+                case '^' -> {
                     double b = vals.pop(), a = vals.pop();
-                    vals.push(Math.pow(a, b));
-                    break;
-                default:
-                    vals.push((double) Character.digit(c, 10));
-                    break;
-            }
+                    yield Math.pow(a, b);
+                }
+                default -> {
+                    if (Character.isDigit(c)) yield (double) Character.digit(c, 10);
+                    try {
+                        yield values["abcdefghijklmnopqrstuvwxyz".indexOf(Character.toLowerCase(c))];
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        throw new IllegalArgumentException("Make sure all your variables are a-z and defined accordingly in alphabetical order.");
+                    }
+                }
+            });
         return vals.peek();
+    }
+
+    public static double evaluateInfix(String infix, double... values) {
+        return evaluatePostfix(toPost(infix), values);
     }
 }
