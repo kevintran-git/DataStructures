@@ -14,12 +14,12 @@ public interface StackInterface<T>
 
     /** Removes and returns this stack's top entry.
      @return  The object at the top of the stack.
-     @throws  NullPointerException if the stack is empty before the operation. */
+     @throws  java.util.EmptyStackException if the stack is empty before the operation. */
     public T pop();
 
     /** Retrieves this stack's top entry.
      @return  The object at the top of the stack.
-     @throws  NullPointerException if the stack is empty. */
+     @throws  java.util.EmptyStackException if the stack is empty. */
     public T peek();
 
     /** Detects whether this stack is empty.

@@ -1,5 +1,6 @@
 package stacks;
 
+
 public class Postfix {
     private static int preced(char operator) {
         if (operator == '+' || operator == '-') return 1;
@@ -33,7 +34,7 @@ public class Postfix {
         return output.toString();
     }
 
-    public static double evaluate(String postfix) {
+    public static double evaluatePostfix(String postfix, double... values) {
         StackInterface<Double> vals = new LinkedStack<>();
         for (char c : postfix.toCharArray())
             switch (c) {
@@ -54,9 +55,20 @@ public class Postfix {
                     vals.push(Math.pow(a, b));
                     break;
                 default:
-                    vals.push((double) Character.digit(c, 10));
-                    break;
+                    if (Character.isDigit(c)) {
+                        vals.push((double) Character.digit(c, 10));
+                        break;
+                    }
+                    try {
+                        vals.push(values["abcdefghijklmnopqrstuvwxyz".indexOf(Character.toLowerCase(c))]);
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        throw new IllegalArgumentException("Make sure all your variables are a-z and defined accordingly in alphabetical order.");
+                    }
             }
         return vals.peek();
+    }
+
+    public static double evaluateInfix(String infix, double... values) {
+        return evaluatePostfix(toPost(infix), values);
     }
 }
