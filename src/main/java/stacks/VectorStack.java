@@ -20,10 +20,11 @@ public class VectorStack<T> implements StackInterface<T> {
      * Removes and returns this stack's top entry.
      *
      * @return The object at the top of the stack.
-     * @throws NullPointerException if the stack is empty before the operation.
+     * @throws java.util.EmptyStackException if the stack is empty before the operation.
      */
     @Override
     public T pop() {
+        if(isEmpty()) throw new java.util.EmptyStackException();
         return stack.remove(stack.size() - 1);
     }
 
@@ -31,10 +32,11 @@ public class VectorStack<T> implements StackInterface<T> {
      * Retrieves this stack's top entry.
      *
      * @return The object at the top of the stack.
-     * @throws NullPointerException if the stack is empty.
+     * @throws java.util.EmptyStackException if the stack is empty.
      */
     @Override
     public T peek() {
+        if(isEmpty()) throw new java.util.EmptyStackException();
         return stack.lastElement();
     }
 
