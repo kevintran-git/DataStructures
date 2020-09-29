@@ -2,7 +2,14 @@ package queues;
 
 public class QueueDemo {
     public static void main(String... args) {
+        WaitLine myLine = new WaitLine();
+        myLine.simulate(6969, 1/69.0, 69);
+        myLine.displayResults();
+        System.out.println("-------------------------------------------------------------------");
+        queueTests();
+    }
 
+    public static void queueTests(){
         QueueInterface<String> myQueue = new LinkedQueue<>();
         myQueue.enqueue("Jada");
         myQueue.enqueue("Jess");
@@ -63,7 +70,5 @@ public class QueueDemo {
             myQueueueueueueue.enqueue("qux");
         }
         for (int i = 0; i < 3; i++) System.out.println(myQueueueueueueue.dequeue()); //should print foo\n bar\n qux\n
-
-
     }
 }
