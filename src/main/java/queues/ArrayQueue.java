@@ -21,7 +21,6 @@ public final class ArrayQueue<T> implements QueueInterface<T> {
         @SuppressWarnings("unchecked")
         T[] tempQueue = (T[]) new Object[initialCapacity + 1];
         queue = tempQueue;
-        frontIndex = 0;
         backIndex = initialCapacity;
         integrityOK = true;
     }
@@ -88,8 +87,11 @@ public final class ArrayQueue<T> implements QueueInterface<T> {
      * Removes all entries from this queue.
      */
     @Override
+    @SuppressWarnings("unchecked")
     public void clear() {
-
+        queue = (T[]) new Object[DEFAULT_CAPACITY + 1];
+        frontIndex = 0;
+        backIndex = DEFAULT_CAPACITY;
     }
 
     private void ensureCapacity() {

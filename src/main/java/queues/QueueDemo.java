@@ -1,9 +1,9 @@
 package queues;
 
 public class QueueDemo {
-    public static void main(String... args){
+    public static void main(String... args) {
 
-        QueueInterface<String> myQueue = new ArrayQueue<>();
+        QueueInterface<String> myQueue = new LinkedQueue<>();
         myQueue.enqueue("Jada");
         myQueue.enqueue("Jess");
         myQueue.enqueue("Jazmin");
@@ -24,10 +24,33 @@ public class QueueDemo {
         front = myQueue.dequeue(); // Removes and returns "Jess"
         System.out.println(front + " is removed from the queue.");
 
+        myQueue.clear();
+        myQueue.enqueue("JJJJJJJJJJJJ");
+        System.out.println(myQueue.isEmpty() + ": Is the queue empty? Should return false.");
+        front = myQueue.getFront(); // Returns "JJJJJJJJJJJJ"
+        System.out.println(front + " is at the front of the queue.");
+
+        myQueue.dequeue();
+        System.out.println(myQueue.isEmpty() + ": Is the queue empty? Should return true.");
+
+        try {
+            myQueue.dequeue();
+        } catch (EmptyQueueException e) {
+            System.out.println("Task failed successfully.");
+        }
+        try {
+            myQueue.getFront();
+        } catch (EmptyQueueException e) {
+            System.out.println("Task failed successfully.");
+        }
+
 
         QueueInterface<String> myQueueueueueueue = new ArrayQueue<>();
-
-        for(int i = 0; i < 100; i++){
+        /*
+        Testing circular array logic. Array queues will "shift" in position, and this one will shift out of the default capacity
+        if it's not taken care of. However, with modular arithmetic, this will be able to loop back to the front of the array if it exceeds the array's length.
+         */
+        for (int i = 0; i < 100; i++) {
             try {
                 myQueueueueueueue.dequeue();
                 myQueueueueueueue.dequeue();
@@ -39,7 +62,7 @@ public class QueueDemo {
             myQueueueueueueue.enqueue("bar");
             myQueueueueueueue.enqueue("qux");
         }
-        for(int i = 0; i < 3; i++)System.out.println(myQueueueueueueue.dequeue());
+        for (int i = 0; i < 3; i++) System.out.println(myQueueueueueueue.dequeue()); //should print foo\n bar\n qux\n
 
 
     }
