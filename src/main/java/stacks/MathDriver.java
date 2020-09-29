@@ -1,7 +1,7 @@
 package stacks;
 
 
-public class Postfix {
+public class MathDriver {
     private static int preced(char operator) {
         if (operator == '+' || operator == '-') return 1;
         if (operator == '*' || operator == '/') return 2;
@@ -9,7 +9,13 @@ public class Postfix {
         return 0;
     }
 
-    public static String toPost(String infix) {
+    /**
+     * Converts an infix expression to postfix expression.
+     *
+     * @param infix Infix expression. Valid operators are "+-*()^/", everything else will be treated as an operand.
+     * @return A postfix expression logically equivalent to the infix expression.
+     */
+    public static String toPostfix(String infix) {
         StackInterface<Character> stack = new VectorStack<>();
         stack.push('#'); //Extra char to avoid underflow
         StringBuilder output = new StringBuilder();
@@ -34,15 +40,22 @@ public class Postfix {
         return output.toString();
     }
 
+    /**
+     * Converts an infix expression to postfix expression.
+     *
+     * @param postfix Post expression. Valid operators are "+-*^/", Letters A-Z and a-z will be treated as operands, as well as digits 0-9.
+     * @param values A list of variable values that will replace the letter operands in alphabetical value. The first number will be a, second will be b, and so fourth.
+     * @return A double equivalent to the evaluated expression.
+     */
     public static double evaluatePostfix(String postfix, double... values) {
         StackInterface<Double> vals = new LinkedStack<>();
         for (char c : postfix.toCharArray())
             switch (c) {
                 case '+':
-                    vals.push(vals.pop() + vals.pop());
+                    vals.push(vals.pop() + vals.pop()); //Reads the next two operands and performs the requested operation in reverse order.
                     break;
                 case '-':
-                    vals.push(-vals.pop() + vals.pop());
+                    vals.push(-vals.pop() + vals.pop()); //Second gets subtracted from the first.
                     break;
                 case '*':
                     vals.push(vals.pop() * vals.pop());
@@ -56,11 +69,11 @@ public class Postfix {
                     break;
                 default:
                     if (Character.isDigit(c)) {
-                        vals.push((double) Character.digit(c, 10));
+                        vals.push((double) Character.digit(c, 10)); //If it's a digit then just use it.
                         break;
                     }
                     try {
-                        vals.push(values["abcdefghijklmnopqrstuvwxyz".indexOf(Character.toLowerCase(c))]);
+                        vals.push(values["abcdefghijklmnopqrstuvwxyz".indexOf(Character.toLowerCase(c))]); //Otherwise, substitute with a corresponding variable.
                     } catch (ArrayIndexOutOfBoundsException e) {
                         throw new IllegalArgumentException("Make sure all your variables are a-z and defined accordingly in alphabetical order.");
                     }
@@ -68,7 +81,14 @@ public class Postfix {
         return vals.peek();
     }
 
+    /**
+     * Converts an infix expression to postfix expression.
+     *
+     * @param infix Infix expression. Valid operators are "+-*^()/", Letters A-Z and a-z will be treated as operands, as well as digits 0-9.
+     * @param values A list of variable values that will replace the letter operands in alphabetical value. The first number will be a, second will be b, and so fourth.
+     * @return A double equivalent to the evaluated expression.
+     */
     public static double evaluateInfix(String infix, double... values) {
-        return evaluatePostfix(toPost(infix), values);
+        return evaluatePostfix(toPostfix(infix), values);
     }
 }
