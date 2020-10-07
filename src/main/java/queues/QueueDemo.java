@@ -2,11 +2,6 @@ package queues;
 
 public class QueueDemo {
     public static void main(String... args) {
-        WaitLine myLine = new WaitLine();
-        myLine.simulate(6969, 1/69.0, 69);
-        myLine.displayResults();
-        System.out.println("-------------------------------------------------------------------");
-        queueTests();
     }
 
     public static void queueTests(){

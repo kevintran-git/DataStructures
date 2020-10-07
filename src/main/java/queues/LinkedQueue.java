@@ -12,8 +12,8 @@ public class LinkedQueue<T> implements QueueInterface<T> {
         private Node<T> succ;
     }
 
-    private Node<T> firstNode = null; // References node at front of queue
-    private Node<T> lastNode = null;  // References node at back of queue
+    private Node<T> head = null; // References node at front of queue
+    private Node<T> tail = null;  // References node at back of queue
 
     /**
      * Adds a new entry to the back of this queue.
@@ -25,10 +25,10 @@ public class LinkedQueue<T> implements QueueInterface<T> {
         Node<T> newNode = new Node<>();
         newNode.item = newEntry;
         if (isEmpty())
-            firstNode = newNode;
+            head = newNode;
         else
-            lastNode.succ = newNode;
-        lastNode = newNode;
+            tail.succ = newNode;
+        tail = newNode;
     }
 
     /**
@@ -41,9 +41,9 @@ public class LinkedQueue<T> implements QueueInterface<T> {
     public T dequeue() {
         T front = getFront();  // Might throw EmptyQueueException
         // Assertion: firstNode != null
-        firstNode = firstNode.succ;
-        if (firstNode == null)
-            lastNode = null;
+        head = head.succ;
+        if (head == null)
+            tail = null;
         return front;
     }
 
@@ -58,7 +58,7 @@ public class LinkedQueue<T> implements QueueInterface<T> {
         if (isEmpty())
             throw new EmptyQueueException();
         else
-            return firstNode.item;
+            return head.item;
     }
 
     /**
@@ -68,7 +68,7 @@ public class LinkedQueue<T> implements QueueInterface<T> {
      */
     @Override
     public boolean isEmpty() {
-        return (firstNode == null) && (lastNode == null);
+        return (head == null) && (tail == null);
     }
 
     /**
@@ -76,7 +76,7 @@ public class LinkedQueue<T> implements QueueInterface<T> {
      */
     @Override
     public void clear() {
-        firstNode = null;
-        lastNode = null;
+        head = null;
+        tail = null;
     }
 }
