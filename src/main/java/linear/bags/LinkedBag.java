@@ -1,10 +1,10 @@
-package bags;
+package linear.bags;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- A class of bags whose entries are stored in a chain of linked nodes.
+ A class of linear.bags whose entries are stored in a chain of linked nodes.
  The bag is never full.
  @author Kevin Tran
  */

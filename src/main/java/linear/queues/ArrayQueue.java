@@ -1,4 +1,4 @@
-package queues;
+package linear.queues;
 
 
 public final class ArrayQueue<T> implements QueueInterface<T> {

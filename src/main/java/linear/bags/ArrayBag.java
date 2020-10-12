@@ -1,10 +1,10 @@
-package bags;
+package linear.bags;
 
 import java.util.Arrays;
 import java.util.Iterator;
 
 /**
- A class of bags whose entries are stored in a fixed-size array.
+ A class of linear.bags whose entries are stored in a fixed-size array.
  @version 5.0
  */
 
@@ -213,7 +213,7 @@ public final class ArrayBag<T> implements BagInterface<T>
     private void checkIntegrity()
     {
         if (!integrityOK)
-            throw new SecurityException("bags.ArrayBag object is corrupt.");
+            throw new SecurityException("linear.bags.ArrayBag object is corrupt.");
     } // end checkIntegrity
 
     /**

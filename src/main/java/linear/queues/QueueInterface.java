@@ -1,4 +1,4 @@
-package queues;
+package linear.queues;
 
 /**
  An interface for the ADT queue.

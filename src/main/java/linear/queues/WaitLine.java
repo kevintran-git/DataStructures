@@ -1,4 +1,4 @@
-package queues;
+package linear.queues;
 
 public class WaitLine {
     private static class Customer {

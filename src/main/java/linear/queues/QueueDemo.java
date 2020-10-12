@@ -1,4 +1,4 @@
-package queues;
+package linear.queues;
 
 public class QueueDemo {
     public static void main(String... args) {
@@ -49,7 +49,7 @@ public class QueueDemo {
 
         QueueInterface<String> myQueueueueueueue = new ArrayQueue<>();
         /*
-        Testing circular array logic. Array queues will "shift" in position, and this one will shift out of the default capacity
+        Testing circular array logic. Array linear.queues will "shift" in position, and this one will shift out of the default capacity
         if it's not taken care of. However, with modular arithmetic, this will be able to loop back to the front of the array if it exceeds the array's length.
          */
         for (int i = 0; i < 100; i++) {

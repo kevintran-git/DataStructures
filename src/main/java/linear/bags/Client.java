@@ -1,7 +1,7 @@
-package bags;
+package linear.bags;
 
 /** A test of the methods add, toArray, isEmpty, and getCurrentSize,
- as defined in the first draft of the class bags.LinkedBag.
+ as defined in the first draft of the class linear.bags.LinkedBag.
  @author Frank M. Carrano, Timothy M. Henry
  @version 5.0
  */

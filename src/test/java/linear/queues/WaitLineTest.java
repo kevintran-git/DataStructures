@@ -1,4 +1,4 @@
-package queues;
+package linear.queues;
 
 import org.junit.jupiter.api.Test;
 

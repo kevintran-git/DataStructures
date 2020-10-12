@@ -1,4 +1,4 @@
-package queues;
+package linear.queues;
 
 public class LinkedDeque<T> implements DequeInterface<T> {
 

@@ -1,6 +1,4 @@
-package bags;
-
-import java.util.Iterator;
+package linear.bags;
 
 /**
  An interface that describes the operations of a bag of objects.
@@ -49,4 +47,4 @@ public interface BagInterface<T> extends Iterable<T>
      Note: If the bag is empty, the returned array is empty. */
     public T[] toArray();
 
-} // end bags.BagInterface
+} // end linear.bags.BagInterface

@@ -1,4 +1,4 @@
-package stacks;
+package linear.stacks;
 
 import java.util.Vector;
 

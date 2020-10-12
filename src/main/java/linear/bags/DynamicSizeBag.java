@@ -1,4 +1,4 @@
-package bags;
+package linear.bags;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -37,7 +37,7 @@ public class DynamicSizeBag<T> implements BagInterface<T> {
     }
 
     private void checkIntegrity() {
-        if (!integrityOK) throw new SecurityException("bags.ArrayBag object is corrupt.");
+        if (!integrityOK) throw new SecurityException("linear.bags.ArrayBag object is corrupt.");
     }
 
     private boolean isArrayFull() {

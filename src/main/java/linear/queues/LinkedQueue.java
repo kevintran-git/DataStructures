@@ -1,4 +1,4 @@
-package queues;
+package linear.queues;
 
 public class LinkedQueue<T> implements QueueInterface<T> {
 

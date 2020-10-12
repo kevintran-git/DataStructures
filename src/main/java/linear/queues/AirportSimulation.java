@@ -1,4 +1,4 @@
-package queues;
+package linear.queues;
 
 public class AirportSimulation {
     private static class Airplane {
@@ -75,7 +75,7 @@ public class AirportSimulation {
                 else
                     planes.addToBack(newPlane);
 
-                System.out.println(newPlane.toString() + (newPlane.isLanding() ? " queues for landing" : " queues for taking off") + " at " + clock + ", which will take " + transactionTime);
+                System.out.println(newPlane.toString() + (newPlane.isLanding() ? " linear.queues for landing" : " linear.queues for taking off") + " at " + clock + ", which will take " + transactionTime);
             } // end if
 
             if (operationTimeLeft > 0)
