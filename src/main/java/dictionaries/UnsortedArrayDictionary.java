@@ -2,10 +2,9 @@ package dictionaries;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public final class ArrayDictionary<K, V> implements DictionaryInterface<K, V> {
+public final class UnsortedArrayDictionary<K, V> implements DictionaryInterface<K, V> {
 
     private static class Entry<K, V> {
         private final K key;
@@ -14,8 +13,8 @@ public final class ArrayDictionary<K, V> implements DictionaryInterface<K, V> {
         private Entry(K searchKey, V dataValue) {
             key = searchKey;
             value = dataValue;
-        } // end constructor
-    } // end Entry
+        }
+    }
 
     @SuppressWarnings("unchecked")
     private Entry<K, V>[] dictionary = (Entry<K, V>[]) new Entry[2];
@@ -148,9 +147,8 @@ public final class ArrayDictionary<K, V> implements DictionaryInterface<K, V> {
      */
     @Override
     public Iterator<K> getKeyIterator() {
-        //return Arrays.stream(dictionary).filter(Objects::nonNull).map(k -> k.key).iterator();
-
-        return new Iterator<K>() {
+        return Arrays.stream(dictionary).filter(Objects::nonNull).map(k -> k.key).iterator();
+/*        return new Iterator<K>() {
             int index = 0;
 
             @Override
@@ -168,7 +166,7 @@ public final class ArrayDictionary<K, V> implements DictionaryInterface<K, V> {
                 } else throw new NoSuchElementException();
                 return result;
             }
-        };
+        };*/
     }
 
     /**
@@ -179,8 +177,8 @@ public final class ArrayDictionary<K, V> implements DictionaryInterface<K, V> {
      */
     @Override
     public Iterator<V> getValueIterator() {
-       // return Arrays.stream(dictionary).filter(Objects::nonNull).map(k -> k.value).iterator();
-        return new Iterator<V>() {
+        return Arrays.stream(dictionary).filter(Objects::nonNull).map(k -> k.value).iterator();
+/*        return new Iterator<V>() {
             int index = 0;
 
             @Override
@@ -198,7 +196,7 @@ public final class ArrayDictionary<K, V> implements DictionaryInterface<K, V> {
                 } else throw new NoSuchElementException();
                 return result;
             }
-        };
+        };*/
     }
 }
 

@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 public class DictionaryDemo {
     public static void main(String...args){
-        DictionaryInterface<String, Integer> people = new ArrayDictionary<>();
+        DictionaryInterface<String, Integer> people = new UnsortedArrayDictionary<>();
         people.add("Dirk", 5551234);
         people.add("Abel", 5555678);
         people.add("Miguel", 5559012);
