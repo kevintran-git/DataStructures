@@ -29,7 +29,8 @@ public class TelephoneDirectoryDriver {
                 addName(directory);
             else if (action == 3)
                 changeName(directory);
-            else System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThat wasn't one of the options listed. Please try again.\n");
+            else
+                System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThat wasn't one of the options listed. Please try again.\n");
             action = getAction();
         }
 
