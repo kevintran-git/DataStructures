@@ -3,14 +3,8 @@ package dictionaries;
 import java.util.Scanner;
 
 public class TelephoneDirectory {
-    private final DictionaryInterface<Name, String> phoneBook; // Sorted dictionary with distinct search keys
+    private final DictionaryInterface<Name, String> phoneBook = new SortedArrayDictionary<>(); // Sorted dictionary with distinct search keys
 
-    public TelephoneDirectory()
-    {
-        phoneBook = new SortedArrayDictionary<>();
-    } // end default constructor
-
-    // 20.10
     /** Reads a text file of names and telephone numbers.
      @param data  A text scanner for the text file of data. */
     public void readFile(Scanner data)
@@ -23,23 +17,37 @@ public class TelephoneDirectory {
 
             Name fullName = new TelephoneDirectory.Name(firstName, lastName);
             phoneBook.add(fullName, phoneNumber);
-        } // end while
-
+        }
         data.close();
-    } // end readFile
+    }
 
-    // 20.11
-    /** Gets the phone number of a given person. */
+    /** @return Gets the phone number of a given person. */
     public String getPhoneNumber(Name personName)
     {
         return phoneBook.getValue(personName);
-    } // end getPhoneNumber
+    }
 
-    public String getPhoneNumber(String firstName, String lastName)
-    {
-        Name fullName = new Name(firstName, lastName);
-        return phoneBook.getValue(fullName);
-    } // end getPhoneNumber
+    /** @return If the phonebook contains a given person. */
+    public boolean containsPerson(Name personName){
+        return phoneBook.contains(personName);
+    }
+
+    /**
+     * Adds a given person to the phonebook if they do not already exist. Does nothing otherwise.
+     * @return If the person does not already exist in the phonebook.  */
+    public boolean add(Name personName, String phoneNumber){
+       if(phoneBook.contains(personName)) return false; //add not successful because person already exists
+        phoneBook.add(personName, phoneNumber); //add the new person if they don't exist
+        return true;
+    }
+
+    /**
+     * Changes a given person's phone number if they already exist. Does nothing otherwise.
+     * @return Person's original phone number, null if they did not exist  */
+    public String change(Name personName, String newPhoneNumber){
+        if(!phoneBook.contains(personName)) return null; //change does nothing if the person doesn't exist
+        return phoneBook.add(personName, newPhoneNumber); //changes existing phone number
+    }
 
     public static class Name implements Comparable<Name>
     {
