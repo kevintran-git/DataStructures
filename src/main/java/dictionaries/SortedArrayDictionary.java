@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 
-public final class UnsortedArrayDictionary<K, V> implements DictionaryInterface<K, V> {
+public final class SortedArrayDictionary<K extends Comparable<? super K>, V> implements DictionaryInterface<K, V> {
 
     private static class Entry<K, V> {
         private final K key;
@@ -29,14 +29,28 @@ public final class UnsortedArrayDictionary<K, V> implements DictionaryInterface<
     }
 
     /**
-     * Linear search for the desired key. O(n) time.
+     * Binary search for the desired key. O(log(n)) time.
      *
      * @param key Key to search for index.
-     * @return The key's index, or -1 if no matching key is found.
+     * @return The key's index, or the insertion point as a negative value, the point where the array would have been
      */
-    private int linearSearch(K key) {
-        for (int i = 0; i <= topIndex; i++) if (dictionary[i].key.equals(key)) return i; //traverse until the matching key is found
-        return -1;
+    private int binarySearch(K key) {
+        int low = 0;
+        int high = topIndex;
+        while (low <= high) {
+            int mid = (low + high) >>> 1; //unsigned bit shift right, exactly the same as (low + high) / 2, however it won't overflow into negative values with larger integers
+            @SuppressWarnings("rawtypes")
+            Comparable midVal = dictionary[mid].key;
+            @SuppressWarnings("unchecked")
+            int cmp = midVal.compareTo(key);
+            if (cmp < 0)
+                low = mid + 1;
+            else if (cmp > 0)
+                high = mid - 1;
+            else
+                return mid; // key found
+        }
+        return -(low + 1);  // key not found. return where the key would have been, adding one, otherwise searching an empty array would return index 0, which cannot be negative.
     }
 
     /**
@@ -51,17 +65,18 @@ public final class UnsortedArrayDictionary<K, V> implements DictionaryInterface<
      */
     @Override
     public V add(K key, V value) {
-        int index = linearSearch(key); //find index
-        if (index == -1) { //index not found
-            ensureCapacity(); //create room
-            dictionary[topIndex + 1] = new Entry<>(key, value); //new entry at the next available entry
-            topIndex++; //increment
-            return null;
-        } else {
-            V temp = dictionary[index].value; //store the existing value and replace it
+        int index = binarySearch(key);
+        if (index >= 0) { //this is a duplicate
+            V temp = dictionary[index].value;
             dictionary[index].value = value;
-            return temp; //return existing
+            return temp;
         }
+        ensureCapacity(); // this is a new value to insert (not a duplicate).
+        index = -index - 1; //subtract the placeholder one we added earlier.
+        System.arraycopy(dictionary, index, dictionary, index + 1, topIndex + 1 - index); //Shifts everything in the dictionary right of the insertion point by 1
+        dictionary[index] = new Entry<>(key, value); //add the value at the correct index
+        topIndex++; //increment the value
+        return null;
     }
 
     /**
@@ -73,13 +88,12 @@ public final class UnsortedArrayDictionary<K, V> implements DictionaryInterface<
      */
     @Override
     public V remove(K key) {
-        int index = linearSearch(key);
-        if (index == -1) return null; //do nothing
-        V temp = dictionary[index].value; //stores value
-        dictionary[index] = dictionary[topIndex]; //replace the entry with the last available one
-        dictionary[topIndex] = null;
+        int index = binarySearch(key);
+        if (index < 0) return null;
+        V temp = dictionary[index].value;
+        System.arraycopy(dictionary, index + 1, dictionary, index, topIndex - index); //Shifts everythng left one, overwrites the deleted value
         topIndex--;
-        return temp; //returns stored value
+        return temp;
     }
 
     /**
@@ -92,8 +106,8 @@ public final class UnsortedArrayDictionary<K, V> implements DictionaryInterface<
      */
     @Override
     public V getValue(K key) {
-        int index = linearSearch(key);
-        return index == -1 ? null : dictionary[index].value; //if index not found return null else return value at index
+        int index = binarySearch(key);
+        return index < 0 ? null : dictionary[index].value;
     }
 
     /**
@@ -104,7 +118,7 @@ public final class UnsortedArrayDictionary<K, V> implements DictionaryInterface<
      */
     @Override
     public boolean contains(K key) {
-        return linearSearch(key) != -1; //linear search will not return -1 if index is found
+        return binarySearch(key) >= 0;
     }
 
     /**
@@ -114,7 +128,7 @@ public final class UnsortedArrayDictionary<K, V> implements DictionaryInterface<
      */
     @Override
     public boolean isEmpty() {
-        return topIndex < 0; //top index will be -1 if empty
+        return topIndex < 0;
     }
 
     /**
@@ -125,7 +139,7 @@ public final class UnsortedArrayDictionary<K, V> implements DictionaryInterface<
      */
     @Override
     public int getSize() {
-        return topIndex + 1; //size will be 0 if empty
+        return topIndex + 1;
     }
 
     /**
@@ -134,8 +148,8 @@ public final class UnsortedArrayDictionary<K, V> implements DictionaryInterface<
     @Override
     @SuppressWarnings("unchecked")
     public void clear() {
-        topIndex = -1; //when the next entry is added the top index will be 0
-        dictionary = (Entry<K, V>[]) new Entry[2]; //replace the array with an empty array
+        topIndex = -1;
+        dictionary = (Entry<K, V>[]) new Entry[2];
     }
 
 
@@ -147,27 +161,7 @@ public final class UnsortedArrayDictionary<K, V> implements DictionaryInterface<
      */
     @Override
     public Iterator<K> getKeyIterator() {
-        return Arrays.stream(dictionary).filter(Objects::nonNull).map(k -> k.key).iterator(); //We can make this more efficient by using java streams.
-        //This implementation gets rid of the null spots in the array and then returns the built in iterator
-/*        return new Iterator<K>() {
-            int index = 0;
-
-            @Override
-            public boolean hasNext() {
-                return index <= topIndex;
-            }
-
-            @Override
-            public K next() {
-                K result = null;
-                if (hasNext()) {
-                    Entry<K, V> currentEntry = dictionary[index];
-                    result = currentEntry.key;
-                    index++;
-                } else throw new NoSuchElementException();
-                return result;
-            }
-        };*/
+        return Arrays.stream(dictionary).filter(Objects::nonNull).map(k -> k.key).iterator();
     }
 
     /**
@@ -178,7 +172,7 @@ public final class UnsortedArrayDictionary<K, V> implements DictionaryInterface<
      */
     @Override
     public Iterator<V> getValueIterator() {
-        return Arrays.stream(dictionary).filter(Objects::nonNull).map(k -> k.value).iterator(); //same as above
+        return Arrays.stream(dictionary).filter(Objects::nonNull).map(k -> k.value).iterator();
     }
 }
 
