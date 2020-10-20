@@ -15,13 +15,13 @@ public class TelephoneDirectoryDriver {
         File source = new File(fileName);
 
         try {
-            Scanner data = new Scanner(source);
+            Scanner data = new Scanner(source); //read data file
             directory.readFile(data);
         } catch (FileNotFoundException e) {
             System.out.println("File not found: " + e.getMessage());
         }
 
-        int action = getAction();
+        int action = getAction(); //action returns int 1-4, this is the user interaction menu
         while (action != 4) {
             if (action == 1)
                 findInDrectory(directory);
