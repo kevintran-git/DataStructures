@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class PhonebookDriver {
+public class TelephoneDirectoryDriver {
     private static final TelephoneDirectory.Name INPUT_ERROR = new TelephoneDirectory.Name("error", "error");
     private static final TelephoneDirectory.Name QUIT = new TelephoneDirectory.Name("quit", "quit");
 
