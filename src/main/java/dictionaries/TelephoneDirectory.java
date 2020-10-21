@@ -110,8 +110,8 @@ public class TelephoneDirectory {
                 result = false;
             else {
                 Name otherName = (Name) other;
-                result = first.equals(otherName.first) &&
-                        last.equals(otherName.last);
+                result = first.toLowerCase().equals(otherName.first.toLowerCase()) && //this will make comparisons not case sensitive.
+                        last.toLowerCase().equals(otherName.last.toLowerCase());
             } // end if
 
             return result;
@@ -119,11 +119,11 @@ public class TelephoneDirectory {
 
         public int compareTo(Name other)  // As given in the answer to Self-Test Question 1 in Java Interlude 3
         {
-            int result = last.compareTo(other.last);
+            int result = last.toLowerCase().compareTo(other.last.toLowerCase());
 
             // If last names are equal, check first names
             if (result == 0)
-                result = first.compareTo(other.first);
+                result = first.toLowerCase().compareTo(other.first.toLowerCase());
 
             return result;
         } // end compareTo
