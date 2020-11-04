@@ -1,33 +1,11 @@
-package dictionaries;
+package hashing;
 
+import dictionaries.DictionaryInterface;
 import org.junit.jupiter.api.Test;
-
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SortedArrayDictionaryTest {
-
-    @Test
-    void isSorted(){
-        DictionaryInterface<String, Integer> people = getTestDictionary();
-        Iterator<String> iterator = people.getKeyIterator(); //Gets the iterator, this should iterate through the keys in alphabetical order.
-        assertEquals("Abel", iterator.next()); //Abel is first alphabetically, but second to be added to to the array.
-        assertEquals("Bette", iterator.next());
-        assertEquals("Carole", iterator.next());
-        assertEquals("Derek", iterator.next());
-        assertEquals("Dirk", iterator.next());
-        assertEquals("Miguel", iterator.next());
-        assertEquals("Nancy", iterator.next());
-        assertEquals("Reiss", iterator.next());
-        assertEquals("Sam", iterator.next());
-        assertEquals("Tabatha", iterator.next());
-        assertEquals("Tom", iterator.next()); //The list is sorted alphabetically.
-        assertThrows(NoSuchElementException.class, iterator::next); //Make sure we reached the end of the list. Stepping too far should throw a NoSuchElementException.
-    }
-
-
+class HashedDictionaryTest {
     @Test
     void add() {
         DictionaryInterface<String, Integer> people = getTestDictionary();
@@ -94,7 +72,7 @@ class SortedArrayDictionaryTest {
      * @return Premade dictionary full of people, this ensures a consistent dictionary across tests
      */
     DictionaryInterface<String, Integer> getTestDictionary(){
-        DictionaryInterface<String, Integer> people = new SortedArrayDictionary<>();
+        DictionaryInterface<String, Integer> people = new HashedDictionary<>();
         people.add("Dirk", 5551234);
         people.add("Abel", 5555678);
         people.add("Miguel", 5559012);

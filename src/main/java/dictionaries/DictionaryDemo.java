@@ -1,14 +1,51 @@
 package dictionaries;
 
+import hashing.HashedDictionary;
+
 import java.util.Iterator;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
+import java.util.stream.IntStream;
 
 public class DictionaryDemo {
-    public static void main(String...args){
+    public static void main(String... args) {
         dictDemo();
+        //System.out.println(squaresHashString(34323142));
+        // hashingTest();
+
+    }
+
+    private static void hashingTest() {
+        double density = 0.8;
+        int n = 5000, end = 6;
+
+        Function<Integer, Double> p = x -> Math.pow(density, x) * Math.pow(Math.E, -density) / factorial(x); //function that outputs the probability of an address being chosen x times
+
+        System.out.println("GIVEN r/n = " + density); //density is amount of keys divided by amount of addresses
+        for (int i = 0; i < end; i++)
+            System.out.println("p(" + i + ") = " + p.apply(i)); //applies the function from 0 to 5
+        System.out.println("SUM = " + IntStream.range(0, end).mapToDouble(p::apply).sum()); //summation of the function from 0 to 5
+
+        System.out.println("\n\n\nGIVEN n = " + n); //amount of addresses in the array
+
+        UnaryOperator<Integer> k = i -> (int) (p.apply(i) * n); //function that outputs the amount of keys hashing to the same address x times
+        for (int i = 0; i < end; i++) System.out.println("Keys mapping to " + i + " = " + k.apply(i)); //same
+        System.out.println("SUM = " + IntStream.range(0, end).map(k::apply).sum()); //summing
+        System.out.println("Addresses with No Keys: " + k.apply(0)); //amount of addresses that have 0 keys hashing to them
+        System.out.println("Addresses with One Key: " + k.apply(1)); //amount of addresses that have 1 key hashing to them
+        System.out.println("Addresses with Colliding Keys: " + (n - k.apply(0) - k.apply(1))); //anything not 1 to 1 is colliding
+
+        var overflow = IntStream.range(2, end).mapToDouble(x -> n * (x - 1) * p.apply(x)).sum(); //summation of addresses with more than 1 key multiplied by amount of keys in each adress
+        System.out.println("Overflow Keys: " + (int) (overflow)); //rounded down
+        System.out.println("Percent of overflow keys: " + 100 * overflow / n);
+    }
+
+    private static int factorial(int n) {
+        return (n == 0 || n == 1) ? 1 : n * factorial(n - 1);
     }
 
     private static void dictDemo() {
-        DictionaryInterface<String, Integer> people = new SortedArrayDictionary<>();
+        DictionaryInterface<String, Integer> people = new HashedDictionary<>();
         people.add("Dirk", 5551234);
         people.add("Abel", 5555678);
         people.add("Miguel", 5559012);
@@ -70,13 +107,16 @@ public class DictionaryDemo {
         printDictionary(people);
     }
 
-    private static void printDictionary(DictionaryInterface<String, Integer> dict){
+    private static void printDictionary(DictionaryInterface<String, Integer> dict) {
+        if (dict.getClass() == HashedDictionary.class) {
+            ((HashedDictionary) dict).displayHashTable();
+            return;
+        }
         Iterator<String> name = dict.getKeyIterator();
         Iterator<Integer> number = dict.getValueIterator();
-        while(name.hasNext()){ //iterator traversal, this will print every name and number in the array assuming the iterator was created correctly
+        while (name.hasNext()) { //iterator traversal, this will print every name and number in the array assuming the iterator was created correctly
             System.out.println(name.next() + ": " + number.next()); //We only need to use one iterator as both arrays should be the same size.
         }
     }
-
 }
 
